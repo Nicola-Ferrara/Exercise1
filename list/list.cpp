@@ -274,7 +274,6 @@ Data List<Data>::BackNRemove() {
 }
 
 // Specific member functions (inherited from MutableLinearContainer)
-//nei prossimi 3 metodi, ci potrebbero essere errori
 template <typename Data>
 Data & List<Data>::operator[](ulong index) {
   if (index >= size) throw std::out_of_range("Index out of range");
