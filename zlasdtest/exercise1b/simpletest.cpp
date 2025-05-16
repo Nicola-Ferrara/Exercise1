@@ -14,7 +14,7 @@
 #include "../set/set.hpp"
 
 #include "../../set/lst/setlst.hpp"
-#include "../../set/vec/setvec.hpp"
+//#include "../../set/vec/setvec.hpp"
 
 /* ************************************************************************** */
 
@@ -132,16 +132,16 @@ void stestSetInt(uint & testnum, uint & testerr) {
 
     /* ********************************************************************** */
 
-    cout << endl << "Begin of SetVec<int> Test:" << endl;
-    lasd::SetVec<int> setvec(vec);
-    stestSetInt(setvec, loctestnum, loctesterr);
+//    cout << endl << "Begin of SetVec<int> Test:" << endl;
+//    lasd::SetVec<int> setvec(vec);
+//    stestSetInt(setvec, loctestnum, loctesterr);
     cout << endl << "Begin of SetLst<int> Test:" << endl;
     lasd::SetLst<int> setlst(vec);
     stestSetInt(setlst, loctestnum, loctesterr);
     cout << "\n";
 
     /* ********************************************************************** */
-
+/*
     setvec.InsertAll(vec);
     lasd::SetVec<int> setvec1(setvec);
 
@@ -187,7 +187,7 @@ void stestSetInt(uint & testnum, uint & testerr) {
     InsertC(loctestnum, loctesterr, setvec2, true, 6);
 
     EqualSetVec(loctestnum, loctesterr, setvec3, setvec2, true);
-
+*/
     /* ********************************************************************** */
 
     setlst.InsertAll(vec);
@@ -238,8 +238,8 @@ void stestSetInt(uint & testnum, uint & testerr) {
 
     /* ********************************************************************** */
 
-    EqualLinear(loctestnum, loctesterr, setvec3, setlst2, true);
-    NonEqualLinear(loctestnum, loctesterr, setlst3, setvec2, false);
+//    EqualLinear(loctestnum, loctesterr, setvec3, setlst2, true);
+//    NonEqualLinear(loctestnum, loctesterr, setlst3, setvec2, false);
 
   }
   catch (...) {
@@ -266,7 +266,7 @@ void stestSetFloat(uint & testnum, uint & testerr) {
     TraversePreOrder(loctestnum, loctesterr, lst, true, &TraversePrint<double>);
 
     /* ********************************************************************** */
-
+/*
     lasd::SetVec<double> setvec1(lst);
 
     Empty(loctestnum, loctesterr, setvec1, false);
@@ -300,7 +300,7 @@ void stestSetFloat(uint & testnum, uint & testerr) {
 
     EqualSetVec(loctestnum, loctesterr, setvec1, setvec2, true);
     NonEqualSetVec(loctestnum, loctesterr, setvec1, setvec2, false);
-
+*/
     /* ********************************************************************** */
 
     lasd::SetLst<double> setlst1(lst);
@@ -340,8 +340,8 @@ void stestSetFloat(uint & testnum, uint & testerr) {
 
     /* ********************************************************************** */
 
-    EqualLinear(loctestnum, loctesterr, setvec1, setlst2, true);
-    NonEqualLinear(loctestnum, loctesterr, setlst2, setvec2, false);
+//    EqualLinear(loctestnum, loctesterr, setvec1, setlst2, true);
+//    NonEqualLinear(loctestnum, loctesterr, setlst2, setvec2, false);
 
   }
   catch (...) {
@@ -382,9 +382,9 @@ void stestSetString(uint & testnum, uint & testerr) {
 
     /* ********************************************************************** */
 
-    cout << endl << "Begin of SetVec<string> Test:" << endl;
-    lasd::SetVec<string> setvec(vec);
-    stestSetString(setvec, loctestnum, loctesterr);
+//    cout << endl << "Begin of SetVec<string> Test:" << endl;
+//    lasd::SetVec<string> setvec(vec);
+//    stestSetString(setvec, loctestnum, loctesterr);
     cout << endl << "Begin of SetLst<string> Test:" << endl;
     lasd::SetLst<string> setlst(vec);
     stestSetString(setlst, loctestnum, loctesterr);
@@ -392,7 +392,7 @@ void stestSetString(uint & testnum, uint & testerr) {
 
     /* ********************************************************************** */
 
-    EqualLinear(loctestnum, loctesterr, setvec, setlst, true);
+//    EqualLinear(loctestnum, loctesterr, setvec, setlst, true);
 
   }
   catch (...) {

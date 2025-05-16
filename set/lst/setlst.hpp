@@ -14,7 +14,7 @@ namespace lasd {
 
 template <typename Data>
 class SetLst : virtual public Set<Data>,
-              virtual public List<Data> {
+              virtual public List<Data> {// dovrebbe essere protected
   // Must extend Set<Data>,
   //             List<Data>
 
@@ -81,11 +81,11 @@ public:
   Data MaxNRemove() override; //(sarebbe BackNRemove) Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
   void RemoveMax() override; //(sarebbe RemoveFromBack) Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
 
-  Data & Predecessor(const Data &) const override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
+  const Data & Predecessor(const Data &) const override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
   Data PredecessorNRemove(const Data &) override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
   void RemovePredecessor(const Data &) override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
 
-  Data & Successor(const Data &) const override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
+  const Data & Successor(const Data &) const override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
   Data SuccessorNRemove(const Data &) override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
   void RemoveSuccessor(const Data &) override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
 
@@ -101,8 +101,8 @@ public:
 
   // Specific member functions (inherited from LinearContainer)
 
-  //const Data & operator[](ulong) const override; // Override LinearContainer member (must throw std::out_of_range when out of range)
-  using List<Data>::operator[];
+  const Data & operator[](ulong) const override; // Override LinearContainer member (must throw std::out_of_range when out of range)
+  //using List<Data>::operator[];
 
   /* ************************************************************************** */
 

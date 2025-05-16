@@ -15,7 +15,7 @@ namespace lasd {
 
 template <typename Data>
 class SetVec : virtual public Set<Data>,
-               virtual protected ResizableContainer, {
+               virtual protected ResizableContainer {
   // Must extend Set<Data>,
   //             ResizableContainer
 
@@ -59,10 +59,10 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  SetVet & operator=(const SetVet &);
+  SetVec & operator=(const SetVec &);
 
   // Move assignment
-  SetVet & operator=(SetVet &&) noexcept;
+  SetVec & operator=(SetVec &&) noexcept;
 
   /* ************************************************************************ */
 

@@ -108,7 +108,7 @@ void SetLst<Data>::RemoveMax() {
 }
 
 template <typename Data>
-Data & SetLst<Data>::Predecessor(const Data& data) const {
+const Data & SetLst<Data>::Predecessor(const Data& data) const {
     // caso base: lista vuota o primo elemento >= data → niente predecessore
     if (size == 0 || head->element >= data)
         throw std::length_error("Predecessore non trovato");
@@ -147,7 +147,7 @@ void SetLst<Data>::RemovePredecessor(const Data& value) {
 }
 
 template <typename Data>
-Data & SetLst<Data>::Successor(const Data& data) const {
+const Data & SetLst<Data>::Successor(const Data& data) const {
     // caso base: lista vuota o ultimo elemento <= data → niente successore
     if (size == 0 || tail->element <= data)
         throw std::length_error("Successore non trovato");
@@ -172,6 +172,13 @@ Data SetLst<Data>::SuccessorNRemove(const Data& value) {
 }
 
 template <typename Data>
+void SetLst<Data>::RemoveSuccessor(const Data& value) {
+    Data val = Successor(value);
+    Remove(val);
+}
+
+
+template <typename Data>
 bool SetLst<Data>::Insert(const Data& value) {
     // Controlla se il valore esiste già
     if (Exists(value)) {
@@ -182,7 +189,9 @@ bool SetLst<Data>::Insert(const Data& value) {
     Node** pos = BinarySearch(value);
 
     // Crea un nuovo nodo e inseriscilo nella lista
-    *pos = new Node(value, *pos);
+    Node* newNode = new Node(value);
+    newNode->next = *pos;
+    *pos = newNode;
 
     // Aggiorna la dimensione della lista
     ++size;
@@ -201,7 +210,9 @@ bool SetLst<Data>::Insert(Data&& value) {
     Node** pos = BinarySearch(value);
 
     // Crea un nuovo nodo e inseriscilo nella lista
-    *pos = new Node(std::move(value), *pos);
+    Node* newNode = new Node(std::move(value));
+    newNode->next = *pos;
+    *pos = newNode;
 
     // Aggiorna la dimensione della lista
     ++size;
@@ -230,8 +241,8 @@ bool SetLst<Data>::Remove(const Data& value) {
     return true;
 }
 
-/*template <typename Data>
-Data& SetLst<Data>::operator[](const unsigned long index) const {
+template <typename Data>
+const Data & SetLst<Data>::operator[](const unsigned long index) const {
     if (index >= size) {
         throw std::out_of_range("Index out of range");
     }
@@ -242,7 +253,7 @@ Data& SetLst<Data>::operator[](const unsigned long index) const {
     }
 
     return current->element;
-}*/
+}
 
 template <typename Data>
 bool SetLst<Data>::Exists(const Data& value) const noexcept {
