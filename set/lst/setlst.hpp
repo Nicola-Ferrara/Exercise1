@@ -41,7 +41,7 @@ public:
 
   // Specific constructors
   SetLst(const TraversableContainer<Data> &); // A set obtained from a TraversableContainer
-  SetLst(const MappableContainer<Data> &&); // A set obtained from a MappableContainer
+  SetLst(MappableContainer<Data> &&); // A set obtained from a MappableContainer
 
   /* ************************************************************************ */
 

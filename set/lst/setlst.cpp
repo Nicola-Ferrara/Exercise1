@@ -11,10 +11,10 @@ SetLst<Data>::SetLst(const TraversableContainer<Data> & con) {
 }
 
 template <typename Data>
-SetLst<Data>::SetLst(const MappableContainerata> & con) {
-    con.Traverse([this])(const Data & dat) {
+SetLst<Data>::SetLst(MappableContainer<Data> & con) {
+    con.Traverse([this](const Data & dat) {
         Insert(std::move(dat));
-    };
+    });
 }
 
 template <typename Data>
@@ -26,7 +26,7 @@ template <typename Data>
 SetLst<Data> & SetLst<Data>::operator=(const SetLst & cpy) {
     if (this != &cpy) {
         Clear();
-        Nodde * cur = cpy.head;
+        Node * cur = cpy.head;
         while (cur != nullptr) {
             Insert(cur->element);
             cur = cur->next;
@@ -85,7 +85,7 @@ Data & SetLst<Data>::MinNRemove() {
 
 template <typename Data>
 void SetLst<Data>::RemoveMin() {
-    if (size == 0) throw std::lenght_error("Set is empty");
+    if (size == 0) throw std::length_error("Set is empty");
     else RemoveFromFront();
 }
 
@@ -103,51 +103,87 @@ Data & SetLst<Data>::MaxNRemove() {
 
 template <typename Data>
 void SetLst<Data>::RemoveMax() {
-    if (size == 0) throw std::lenght_error("Set is empty");
+    if (size == 0) throw std::length_error("Set is empty");
     else RemoveFromBack();
 }
 
 template <typename Data>
 const Data & SetLst<Data>::Predecessor(const Data & dat) const {
-    if (size == 0 || dat == head->elements || size == 1) {
+    if (size == 0 || dat == head->element || size == 1) {
         throw std::length_error("Element not found");
     } else {
-        Node* current = head;
-        Node* predecessor = nullptr;
-
-        // Simula la ricerca binaria
-        unsigned long left = 0;
-        unsigned long right = size - 1;
-        unsigned long mid;
-        unsigned long n = 0;
-
-        while (left <= right) {
-            mid = left + (right - left) / 2;
-            mid = mid - n;
-            // Trova il nodo a metà
-            Node* midNode = head;
-            for (unsigned long i = n; i < mid+n; ++i) {
-                midNode = midNode->next;
-            }
-            n = mid;
-
-            if (midNode->element < value) {
-                predecessor = midNode; // Aggiorna il predecessore
-                left = mid + 1;        // Cerca a destra
-            } else {
-                right = mid - 1;       // Cerca a sinistra
-            }
+        Node ** result = BinarySearch(dat);
+        if (result == nullptr) {
+            throw std::length_error("Element not found");
         }
-
-        if (predecessor == nullptr) {
-            throw std::length_error("No predecessor found");
-        }
-
-        return predecessor->element;
-
+        Node * current = head;
+        while(current->next != *result) current = current->next;
+        return current->element;
     }
 
+template <typename Data>
+typename SetLst<Data>::Node** SetLst<Data>::BinarySearch(const Data& dat) const {
+    long left = 0;
+    long right = size - 1;
+    Node* leftNode = head;
+    Node** current = &head;
+
+    while (left <= right) {
+        long mid = left + (right - left) / 2;
+        Node* midNode = leftNode;
+        Node** midPtr = current;
+        for (long i = left; i < mid; ++i) {
+            midPtr = &(midNode->next);
+            midNode = midNode->next;
+        }
+
+        if (midNode->element == dat) {
+            return midPtr;
+        } else if (midNode->element < dat) {
+            left = mid + 1;
+            leftNode = midNode->next;
+            current = &(midNode->next);
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return nullptr;
 }
+
+template <typename Data>
+bool SetLst<Data>::Insert(const Data& dat) {
+    Node** pos = BinarySearch(dat);
+
+    // Se l'elemento esiste già, non inserire
+    if (pos != nullptr && (*pos) != nullptr && (*pos)->element == dat) {
+        return false;
+    }
+
+    // Trova dove inserire (in testa o tra due nodi)
+    Node** curr = &head;
+    Node* prev = nullptr;
+    while (*curr != nullptr && (*curr)->element < dat) {
+        prev = *curr;
+        curr = &((*curr)->next);
+    }
+
+    // Crea nuovo nodo
+    Node* newNode = new Node(dat);
+
+    // Inserisci in lista
+    newNode->next = *curr;
+    *curr = newNode;
+
+    // Aggiorna tail se necessario
+    if (newNode->next == nullptr) {
+        tail = newNode;
+    }
+
+    ++size;
+    return true;
+}
+
 
 /* ************************************************************************** */
 
