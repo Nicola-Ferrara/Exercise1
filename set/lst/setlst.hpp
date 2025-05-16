@@ -1,4 +1,3 @@
-
 #ifndef SETLST_HPP
 #define SETLST_HPP
 
@@ -121,7 +120,7 @@ protected:
 
   // Auxiliary functions, if necessary!
   //Funzione che arriva a metà lista, deve restituire il puntatore al nodo che ha raggiunto
-  Node** BinarySearch(const Data&) const;
+  Node** BinarySearch(const Data&) const;
 
 };
 

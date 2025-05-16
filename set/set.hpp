@@ -16,7 +16,7 @@ namespace lasd {
 template <typename Data>
 class Set : virtual public OrderedDictionaryContainer<Data>,
             virtual public LinearContainer<Data>,
-            virtual public ClearableContainer<Data> {
+            virtual public ClearableContainer {
   // Must extend OrderedDictionaryContainer<Data>,
   //             LinearContainer<Data>,
   //             ClearableContainer

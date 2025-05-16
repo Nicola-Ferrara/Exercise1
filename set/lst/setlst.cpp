@@ -5,13 +5,13 @@ namespace lasd {
 
 template <typename Data>
 SetLst<Data>::SetLst(const TraversableContainer<Data> & con) {
-    con.Traverse([this])(const Data & dat) {
+    con.Traverse([this](const Data & dat) {
         Insert(dat);
-    };
+    });
 }
 
 template <typename Data>
-SetLst<Data>::SetLst(MappableContainer<Data> & con) {
+SetLst<Data>::SetLst(MappableContainer<Data> && con) {
     con.Traverse([this](const Data & dat) {
         Insert(std::move(dat));
     });
@@ -39,9 +39,9 @@ template <typename Data>
 SetLst<Data> & SetLst<Data>::operator=(SetLst && cpy) noexcept {
     if (this != &cpy) {
         Clear();
-        std::swap(head, mv.head);
-        std::swap(tail, mv.tail);
-        std::swap(size, mv.size);
+        std::swap(head, cpy.head);
+        std::swap(tail, cpy.tail);
+        std::swap(size, cpy.size);
     }
     return *this;
 }
@@ -120,62 +120,81 @@ const Data & SetLst<Data>::Predecessor(const Data & dat) const {
         while(current->next != *result) current = current->next;
         return current->element;
     }
+}
 
 template <typename Data>
 typename SetLst<Data>::Node** SetLst<Data>::BinarySearch(const Data& dat) const {
+    if (size == 0) {
+        return const_cast<Node**>(&head);
+    }
+
     long left = 0;
     long right = size - 1;
+
     Node* leftNode = head;
-    Node** current = &head;
+    Node** leftPtr = const_cast<Node**>(&head);
+    Node** resultPtr = leftPtr;
 
     while (left <= right) {
         long mid = left + (right - left) / 2;
+        
+        // Calcola la distanza da sinistra
+        long steps = mid - left;
+        
         Node* midNode = leftNode;
-        Node** midPtr = current;
-        for (long i = left; i < mid; ++i) {
-            midPtr = &(midNode->next);
-            midNode = midNode->next;
+        Node** midPtr = leftPtr;
+        for (long i = 0; i < steps && midNode != nullptr; ++i) {
+            midPtr = &((*midPtr)->next);
+            midNode = *midPtr;
+        }
+
+        if (midNode == nullptr) {
+            return resultPtr;
         }
 
         if (midNode->element == dat) {
             return midPtr;
         } else if (midNode->element < dat) {
+            // Aggiorna il puntatore risultato
+            resultPtr = &(midNode->next);
+            
+            // Sposta "sinistra" avanti
             left = mid + 1;
             leftNode = midNode->next;
-            current = &(midNode->next);
+            leftPtr = &((*midPtr)->next);
         } else {
             right = mid - 1;
+            resultPtr = midPtr;
         }
     }
 
-    return nullptr;
+    return resultPtr;
 }
+}
+
+// ...existing code...
 
 template <typename Data>
 bool SetLst<Data>::Insert(const Data& dat) {
     Node** pos = BinarySearch(dat);
 
-    // Se l'elemento esiste già, non inserire
+    // Se già presente, non inserire
     if (pos != nullptr && (*pos) != nullptr && (*pos)->element == dat) {
         return false;
     }
 
-    // Trova dove inserire (in testa o tra due nodi)
-    Node** curr = &head;
-    Node* prev = nullptr;
-    while (*curr != nullptr && (*curr)->element < dat) {
-        prev = *curr;
-        curr = &((*curr)->next);
+    // Trova dove inserire (se pos è nullptr, inserisci in testa)
+    Node** insertPos = &head;
+    Node* curr = head;
+    while (curr != nullptr && curr->element < dat) {
+        insertPos = &(curr->next);
+        curr = curr->next;
     }
 
-    // Crea nuovo nodo
     Node* newNode = new Node(dat);
+    newNode->next = *insertPos;
+    *insertPos = newNode;
 
-    // Inserisci in lista
-    newNode->next = *curr;
-    *curr = newNode;
-
-    // Aggiorna tail se necessario
     if (newNode->next == nullptr) {
         tail = newNode;
     }
@@ -187,4 +206,3 @@ bool SetLst<Data>::Insert(const Data& dat) {
 
 /* ************************************************************************** */
 
-}

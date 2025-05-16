@@ -1,6 +1,7 @@
 #include "setlst.hpp"
 #include <iostream>
 using namespace std;
+using namespace lasd;
 
 int main() {
     lasd::SetLst<int> lista;
