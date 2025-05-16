@@ -108,15 +108,152 @@ void SetLst<Data>::RemoveMax() {
 }
 
 template <typename Data>
-const Data & SetLst<Data>::Predecessor(const Data & dat) const {
-    if (size == 0 && head->element >= dat) throw std::length_error("Element not found");
-    Node ** result = BinarySearch(dat);
-    if (result == nullptr) throw std::length_error("Element not found");
-    Node * current = head;
-    while(current->next != *result) current = current->next;
-    return current->element;
+Data & SetLst<Data>::Predecessor(const Data& data) const {
+    // caso base: lista vuota o primo elemento >= data → niente predecessore
+    if (size == 0 || head->element >= data)
+        throw std::length_error("Predecessore non trovato");
 
+    // BinarySearch restituisce il puntatore al puntatore del primo nodo >= data
+    Node** pos = BinarySearch(data);
+
+    // se pos punta ad head, allora *pos == head, ma abbiamo già escluso head->element >= data
+    // *** predPtr deve sempre esistere ***
+    Node* pred = nullptr;
+    // scorriamo fino a trovare il nodo che punta a *pos
+    for (Node* curr = head; curr != nullptr; curr = curr->next) {
+        if (curr->next == *pos) {
+            pred = curr;
+            break;
+        }
+    }
+
+    if (pred == nullptr)
+        throw std::length_error("Predecessore non trovato");
+
+    return pred->element;
 }
+
+template <typename Data>
+Data SetLst<Data>::PredecessorNRemove(const Data& value) {
+    Data val = Predecessor(value);
+    Remove(val);
+    return val;
+}
+
+template <typename Data>
+void SetLst<Data>::RemovePredecessor(const Data& value) {
+    Data val = Predecessor(value);
+    Remove(val);
+}
+
+template <typename Data>
+Data & SetLst<Data>::Successor(const Data& data) const {
+    // caso base: lista vuota o ultimo elemento <= data → niente successore
+    if (size == 0 || tail->element <= data)
+        throw std::length_error("Successore non trovato");
+
+    // BinarySearch restituisce il puntatore al puntatore del primo nodo >= data
+    Node** pos = BinarySearch(data);
+
+    // se *pos esiste ed è esattamente == data, il successore è il nodo successivo
+    Node* succ = (*pos != nullptr && (*pos)->element == data) ? (*pos)->next: *pos;
+
+    if (succ == nullptr)
+        throw std::length_error("Successore non trovato");
+
+    return succ->element;
+}
+
+template <typename Data>
+Data SetLst<Data>::SuccessorNRemove(const Data& value) {
+    Data val = Successor(value);
+    Remove(val);
+    return val;
+}
+
+template <typename Data>
+bool SetLst<Data>::Insert(const Data& value) {
+    // Controlla se il valore esiste già
+    if (Exists(value)) {
+        return false; // Non inserire duplicati
+    }
+
+    // Trova la posizione corretta per l'inserimento
+    Node** pos = BinarySearch(value);
+
+    // Crea un nuovo nodo e inseriscilo nella lista
+    *pos = new Node(value, *pos);
+
+    // Aggiorna la dimensione della lista
+    ++size;
+
+    return true;
+}
+
+template <typename Data>
+bool SetLst<Data>::Insert(Data&& value) {
+    // Controlla se il valore esiste già
+    if (Exists(value)) {
+        return false; // Non inserire duplicati
+    }
+
+    // Trova la posizione corretta per l'inserimento
+    Node** pos = BinarySearch(value);
+
+    // Crea un nuovo nodo e inseriscilo nella lista
+    *pos = new Node(std::move(value), *pos);
+
+    // Aggiorna la dimensione della lista
+    ++size;
+
+    return true;
+}
+
+template <typename Data>
+bool SetLst<Data>::Remove(const Data& value) {
+    // Trova il nodo da rimuovere
+    Node** pos = BinarySearch(value);
+
+    // Controlla se il nodo esiste
+    if (*pos == nullptr || (*pos)->element != value) {
+        return false; // Il valore non esiste nella lista
+    }
+
+    // Rimuovi il nodo
+    Node* temp = *pos;
+    *pos = (*pos)->next;
+    delete temp;
+
+    // Aggiorna la dimensione della lista
+    --size;
+
+    return true;
+}
+
+/*template <typename Data>
+Data& SetLst<Data>::operator[](const unsigned long index) const {
+    if (index >= size) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    Node* current = head;
+    for (unsigned long i = 0; i < index; ++i) {
+        current = current->next;
+    }
+
+    return current->element;
+}*/
+
+template <typename Data>
+bool SetLst<Data>::Exists(const Data& value) const noexcept {
+    // Usa BinarySearch per trovare la posizione del valore
+    Node** pos = BinarySearch(value);
+
+    // Controlla se il valore esiste
+    return (*pos != nullptr && (*pos)->element == value);
+}
+
+
 
 template <typename Data>
 typename SetLst<Data>::Node** SetLst<Data>::BinarySearch(const Data& dat) const {
@@ -165,35 +302,6 @@ typename SetLst<Data>::Node** SetLst<Data>::BinarySearch(const Data& dat) const 
     }
 
     return resultPtr;
-}
-
-template <typename Data>
-bool SetLst<Data>::Insert(const Data & dat) {
-    Node** pos = BinarySearch(dat);
-
-    // Se già presente, non inserire
-    if (pos != nullptr && (*pos) != nullptr && (*pos)->element == dat) {
-        return false;
-    }
-
-    // Trova dove inserire (se pos è nullptr, inserisci in testa)
-    Node** insertPos = &head;
-    Node* curr = head;
-    while (curr != nullptr && curr->element < dat) {
-        insertPos = &(curr->next);
-        curr = curr->next;
-    }
-
-    Node* newNode = new Node(dat);
-    newNode->next = *insertPos;
-    *insertPos = newNode;
-
-    if (newNode->next == nullptr) {
-        tail = newNode;
-    }
-
-    ++size;
-    return true;
 }
 
 template <typename Data>

@@ -81,11 +81,11 @@ public:
   Data MaxNRemove() override; //(sarebbe BackNRemove) Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
   void RemoveMax() override; //(sarebbe RemoveFromBack) Override OrderedDictionaryContainer member (concrete function must throw std::length_error when empty)
 
-  const Data & Predecessor(const Data &) const override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
+  Data & Predecessor(const Data &) const override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
   Data PredecessorNRemove(const Data &) override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
   void RemovePredecessor(const Data &) override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
 
-  const Data & Successor(const Data &) const override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
+  Data & Successor(const Data &) const override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
   Data SuccessorNRemove(const Data &) override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
   void RemoveSuccessor(const Data &) override; // Override OrderedDictionaryContainer member (concrete function must throw std::length_error when not found)
 
@@ -108,7 +108,7 @@ public:
 
   // Specific member function (inherited from TestableContainer)
 
-  //bool Exists(const Data &) const noexcept override; // Override TestableContainer member
+  bool Exists(const Data &) const noexcept override; // Override TestableContainer member
 
   /* ************************************************************************ */
 
