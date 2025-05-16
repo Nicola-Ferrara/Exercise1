@@ -14,7 +14,7 @@ namespace lasd {
 
 template <typename Data>
 class SetLst : virtual public Set<Data>,
-              virtual protected List<Data> {
+              virtual public List<Data> {
   // Must extend Set<Data>,
   //             List<Data>
 
@@ -108,7 +108,7 @@ public:
 
   // Specific member function (inherited from TestableContainer)
 
-  bool Exists(const Data &) const noexcept override; // Override TestableContainer member
+  //bool Exists(const Data &) const noexcept override; // Override TestableContainer member
 
   /* ************************************************************************ */
 
@@ -121,6 +121,12 @@ protected:
   // Auxiliary functions, if necessary!
   //Funzione che arriva a metà lista, deve restituire il puntatore al nodo che ha raggiunto
   Node** BinarySearch(const Data&) const;
+  using List<Data>::Front;
+  using List<Data>::Back;
+  using List<Data>::BackNRemove;
+  using List<Data>::FrontNRemove;
+  using List<Data>::RemoveFromFront;
+  using List<Data>::RemoveFromBack;
 
 };
 

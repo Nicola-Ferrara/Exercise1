@@ -25,6 +25,4 @@ void mytest() {
         cout << val << " ";
     });
     cout << endl;
-
-    return 0;
 }

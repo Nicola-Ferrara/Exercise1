@@ -78,7 +78,7 @@ const Data & SetLst<Data>::Min() const {
 }
 
 template <typename Data>
-Data & SetLst<Data>::MinNRemove() {
+Data SetLst<Data>::MinNRemove() {
     if (size == 0) throw std::length_error("Set is empty");
     else return FrontNRemove();
 }
@@ -96,7 +96,7 @@ const Data & SetLst<Data>::Max() const {
 }
 
 template <typename Data>
-Data & SetLst<Data>::MaxNRemove() {
+Data SetLst<Data>::MaxNRemove() {
     if (size == 0) throw std::length_error("Set is empty");
     else return BackNRemove();
 }
@@ -109,17 +109,13 @@ void SetLst<Data>::RemoveMax() {
 
 template <typename Data>
 const Data & SetLst<Data>::Predecessor(const Data & dat) const {
-    if (size == 0 || dat == head->element || size == 1) {
-        throw std::length_error("Element not found");
-    } else {
-        Node ** result = BinarySearch(dat);
-        if (result == nullptr) {
-            throw std::length_error("Element not found");
-        }
-        Node * current = head;
-        while(current->next != *result) current = current->next;
-        return current->element;
-    }
+    if (size == 0 && head->element >= dat) throw std::length_error("Element not found");
+    Node ** result = BinarySearch(dat);
+    if (result == nullptr) throw std::length_error("Element not found");
+    Node * current = head;
+    while(current->next != *result) current = current->next;
+    return current->element;
+
 }
 
 template <typename Data>
@@ -170,12 +166,9 @@ typename SetLst<Data>::Node** SetLst<Data>::BinarySearch(const Data& dat) const 
 
     return resultPtr;
 }
-}
-
-// ...existing code...
 
 template <typename Data>
-bool SetLst<Data>::Insert(const Data& dat) {
+bool SetLst<Data>::Insert(const Data & dat) {
     Node** pos = BinarySearch(dat);
 
     // Se già presente, non inserire
@@ -203,6 +196,12 @@ bool SetLst<Data>::Insert(const Data& dat) {
     return true;
 }
 
+template <typename Data>
+void SetLst<Data>::Clear() {
+    List<Data>::Clear();
+}
+
 
 /* ************************************************************************** */
 
+}
