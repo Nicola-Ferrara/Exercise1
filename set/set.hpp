@@ -6,7 +6,6 @@
 
 #include "../container/dictionary.hpp"
 #include "../container/traversable.hpp"
-#include "../container/linear.hpp" //non sicuro
 
 /* ************************************************************************** */
 

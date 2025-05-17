@@ -73,7 +73,6 @@ List<Data>::List(const List<Data> & lst) {
     size = lst.size;
   }
 }
-
 // Move constructor
 template<typename Data>
 List<Data>::List(List<Data> && lst) noexcept {
@@ -322,7 +321,7 @@ const Data & List<Data>::Back() const {
   if (tail != nullptr) {
     return tail->element;
   } else {
-    throw std::length_error("Access to an empty list.");
+    throw std::length_error("Access to an empty list");
   }
 }
 

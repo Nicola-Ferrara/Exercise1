@@ -14,7 +14,7 @@ namespace lasd {
 
 template <typename Data>
 class SetLst : virtual public Set<Data>,
-              virtual public List<Data> {// dovrebbe essere protected
+              virtual protected List<Data> {// dovrebbe essere protected
   // Must extend Set<Data>,
   //             List<Data>
 
@@ -53,7 +53,7 @@ public:
   /* ************************************************************************ */
 
   // Destructor
-  virtual ~SetLst();
+  virtual ~SetLst() {};
 
   /* ************************************************************************ */
 

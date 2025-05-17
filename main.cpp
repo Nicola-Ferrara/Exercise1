@@ -1,7 +1,7 @@
 
 #include "zlasdtest/test.hpp"
 
-#include "zmytest/test.hpp"
+//#include "zmytest/test.hpp"
 
 /* ************************************************************************** */
 
@@ -11,7 +11,7 @@
 
 int main() {
   std::cout << "LASD Libraries 2025" << std::endl;
-  //lasdtest();
-  mytest();
+  lasdtest();
+  //mytest();
   return 0;
 }

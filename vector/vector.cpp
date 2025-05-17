@@ -71,16 +71,16 @@ Vector<Data> & Vector<Data>::operator=(Vector<Data> && vec) noexcept {
 // Comparison operators
 template<typename Data>
 bool Vector<Data>::operator==(const Vector<Data> & vec) const noexcept {
-  if (size == vec.size) {
-    for (ulong index = 0; index < size; ++index) {
-      if (Elements[index] != vec.Elements[index]) {
+    if (size == vec.size) {
+        for (ulong index = 0; index < size; ++index) {
+            if (Elements[index] != vec.Elements[index]) {
+                return false;
+            }
+        }
+        return true;
+    } else {
         return false;
-      }
     }
-    return true;
-  } else {
-    return false;
-  }
 }
 
 template<typename Data>

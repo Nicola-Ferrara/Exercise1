@@ -17,10 +17,10 @@ SetLst<Data>::SetLst(MappableContainer<Data> && con) {
     });
 }
 
-template <typename Data>
+/*template <typename Data>
 SetLst<Data>::~SetLst() {
     delete head;
-}
+}*/
 
 template <typename Data>
 SetLst<Data> & SetLst<Data>::operator=(const SetLst & cpy) {
@@ -55,7 +55,7 @@ bool SetLst<Data>::operator==(const SetLst<Data>& other) const noexcept {
     Node* current1 = head;
     Node* current2 = other.head;
 
-    while (current1 != nullptr && current2 != nullptr) {
+    while (current1 != nullptr || current2 != nullptr) {
         if (current1->element != current2->element) {
             return false; // Se un elemento è diverso, i set non sono uguali
         }
@@ -193,6 +193,10 @@ bool SetLst<Data>::Insert(const Data& value) {
     newNode->next = *pos;
     *pos = newNode;
 
+    if (newNode->next == nullptr) {
+        tail = newNode; // Se il nuovo nodo è l'ultimo, aggiorna il puntatore tail
+    }
+
     // Aggiorna la dimensione della lista
     ++size;
 
@@ -214,6 +218,10 @@ bool SetLst<Data>::Insert(Data&& value) {
     newNode->next = *pos;
     *pos = newNode;
 
+    if (newNode->next == nullptr) {
+        tail = newNode; // Se il nuovo nodo è l'ultimo, aggiorna il puntatore tail
+    }
+
     // Aggiorna la dimensione della lista
     ++size;
 
@@ -233,6 +241,7 @@ bool SetLst<Data>::Remove(const Data& value) {
     // Rimuovi il nodo
     Node* temp = *pos;
     *pos = (*pos)->next;
+    temp->next = nullptr;
     delete temp;
 
     // Aggiorna la dimensione della lista
